@@ -34,7 +34,7 @@ describe User do
 
 	describe "when email format is invalid" do
 		it "should be invalid" do
-			addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
+			addresses = %w[user@foo,com user_at_foo.org example.user@foo. foo@bar_baz.com foo@bar+baz.com]
 			addresses.each do |invalid_address|
 				@user.email = invalid_address
 				@user.should_not be_valid	
@@ -55,7 +55,7 @@ describe User do
 	describe "when email address already taken" do
 		before do
 			user_with_same_email = @user.dup
-			user_with_same_email = @user.email.downcase
+			user_with_same_email.email = @user.email.upcase # email should be case-insensitive
 			user_with_same_email.save
 		end
 
